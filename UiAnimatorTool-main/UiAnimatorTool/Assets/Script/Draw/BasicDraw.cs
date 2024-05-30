@@ -67,7 +67,14 @@ public static class BasicDraw
     {
         return  EditorGUI.Slider(pRect, pValue, pLeftValue, pRightValue);
     }
-    
+
+    public static float VerticalSlider(Rect pRect, float pValue, float pLeftValue, float pRightValue)
+    {
+        pValue = GUI.VerticalSlider(pRect, pValue, pLeftValue, pRightValue);
+
+        return pValue;
+    }
+
     public static void DrawSlider(Rect pRect, ref float pValue, float pLeftValue, float pRightValue)
     {
         pValue =  EditorGUI.Slider(pRect, pValue, pLeftValue, pRightValue);

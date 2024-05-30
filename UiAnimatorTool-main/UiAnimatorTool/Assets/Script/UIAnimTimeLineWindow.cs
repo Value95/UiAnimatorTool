@@ -15,6 +15,10 @@ public class UIAnimTimeLineWindow : DrawAnimTimeLine
         private Rect _contentRect;
         [SerializeField]
         private Rect _buttonRect;
+
+        private float contentsY;
+
+        private float topY;
         
         public void CreateWindow(UiAnimator pUiAnimator)
         {
@@ -24,6 +28,12 @@ public class UIAnimTimeLineWindow : DrawAnimTimeLine
             titleContent = new GUIContent("UI Anim Time Line Window");
             minSize = new Vector2(1000, 500);
             Show();
+        }
+
+        public void CloseWindow()
+        {
+            _UiAnimator.SetDrawClip(null);
+            this.Close();
         }
     
         private void _Init()
@@ -55,25 +65,74 @@ public class UIAnimTimeLineWindow : DrawAnimTimeLine
 
         protected override void ContentsUpdate(Rect pLeftRect, Event pMouseEvent)
         {
+            topY = pLeftRect.y;
+
             _contentRect = pLeftRect;
             _contentRect.height = 20;
-            
+
             DrawStateButton();
-            
+
+            _contentRect.y -= contentsY;
+
             // Grup size만큼 내려가서 그리게
-            _contentRect = _DrawClipGroup(pLeftRect, _contentRect, pMouseEvent);
-            
+            _contentRect = _DrawClipGroup(_contentRect, pMouseEvent);
+
             // ADD Group
-            var lAddRect = Rect.MinMaxRect(50,_contentRect.y,200,_contentRect.y + 50);
+            var lAddRect = Rect.MinMaxRect(50, _contentRect.y, 200, _contentRect.y + 50);
             DrawAddClipGroup(lAddRect);
+
+            // ClipGroup 위치 조종
+            Rect lContentsRect = pLeftRect;
+            lContentsRect.x = 10;
+            lContentsRect.height = pLeftRect.height - pLeftRect.y - 50;
+
+            float lSliderMaxValue = (_contentRect.y + contentsY - 50) - lContentsRect.height;
             
+            if(lSliderMaxValue >= 0)
+                _ContentsGroupSlider(lContentsRect, ref contentsY, 3.0f, 0, lSliderMaxValue);
+            else
+                contentsY = 0;
+
             // Game Scene Update
-            if(!Application.isPlaying)
+            if (!Application.isPlaying)
                 _GameSceneUpdate();
-            
-            
+
+
             _UiAnimator.StateUpdate();
-            _PlayingTime();   
+            _PlayingTime();
+        }
+
+        private void _ContentsGroupSlider(Rect area, ref float value, float increment, float pMinValue, float pMaxValue)
+        {
+            Event e = Event.current;
+
+            // 특정 영역 안에 마우스 커서가 있는지 확인
+            if (area.Contains(e.mousePosition))
+            {
+                // 마우스 휠 이벤트 처리
+                if (e.type == EventType.ScrollWheel)
+                {
+                    float scrollDelta = e.delta.y;
+
+                    // 마우스 휠 스크롤에 따라 float 값 증가 또는 감소
+                    if (scrollDelta > 0)
+                    {
+                        value = Mathf.Min(value + increment, pMaxValue);
+                    }
+                    else if (scrollDelta < 0)
+                    {
+                        value = Mathf.Max(value - increment, pMinValue);
+                    }
+
+                    // 값 변경을 즉시 적용하기 위해 Repaint 호출
+                    Repaint();
+
+                    // 이벤트 사용 처리
+                    e.Use();
+                }
+            }
+            
+            value = BasicDraw.VerticalSlider(area, value, 0, pMaxValue);
         }
 
         private void _PlayingTime()
@@ -148,8 +207,8 @@ public class UIAnimTimeLineWindow : DrawAnimTimeLine
         {
             _UiAnimator.Play(currentTime + drawViewMin);
         }
-        
-        private Rect _DrawClipGroup(Rect pLeftRect, Rect pContentRect, Event pMouseEvent)
+
+        private Rect _DrawClipGroup(Rect pContentRect, Event pMouseEvent)
         {
             int lCount = _UiAnimator.GetAnimationClipGroupCount();
             for (int i = 0; i < lCount; ++i)
@@ -164,9 +223,11 @@ public class UIAnimTimeLineWindow : DrawAnimTimeLine
 
             return pContentRect;
         }
-        
+
         private (bool, float) DrawClipContent(int pIndex, Rect pLeftRect, Event pMouseEvent)
         {
+            bool lIsDraw = false;
+            
             AnimationClipGroup lAnimationClipGroup = _UiAnimator.GetAnimationClipGroup(pIndex);
 
             if (lAnimationClipGroup.clipGroups is null)
@@ -180,15 +241,29 @@ public class UIAnimTimeLineWindow : DrawAnimTimeLine
             if (lAnimationClipGroup.isToogle)
                 lBackGroundRect.height = (lBackGroundRect.height * (lClipGroupCount + 2)) + 10 + (lClipGroupCount * 5);
 
-            BasicDraw.DrawRect(lBackGroundRect);
+            lIsDraw = topY <= lBackGroundRect.y + lBackGroundRect.height;
+            if (lIsDraw)
+            {
+                if (topY >= lBackGroundRect.y)
+                {
+                    lBackGroundRect.height -= topY - lBackGroundRect.y;
+                    lBackGroundRect.y = topY;
+                }
+
+                BasicDraw.DrawRect(lBackGroundRect);
+            }
             //*/
 
             //* 해당 그룹의 이름
             Rect lGroupNameRect = pLeftRect;
             lGroupNameRect.x += 20;
-            
-            BasicDraw.GuiStyleRefresh();
-            BasicDraw.DrawText(lGroupNameRect, lAnimationClipGroup.groupName, TextAnchor.MiddleLeft);
+
+            lIsDraw = topY <= lGroupNameRect.y + lGroupNameRect.height;
+            if (lIsDraw)
+            {
+                BasicDraw.GuiStyleRefresh();
+                BasicDraw.DrawText(lGroupNameRect, lAnimationClipGroup.groupName, TextAnchor.MiddleLeft);
+            }
             //*/
 
             //*  on off
@@ -196,7 +271,9 @@ public class UIAnimTimeLineWindow : DrawAnimTimeLine
             lOnOffRect.x = pLeftRect.x;
             lOnOffRect.y = pLeftRect.y;
 
-            DrawToggleLabel(lOnOffRect, lAnimationClipGroup.isToogle ? "↑" : "↓", ref lAnimationClipGroup.isToogle);
+            lIsDraw = topY <= lOnOffRect.y +lOnOffRect.height;
+            if(lIsDraw)
+                DrawToggleLabel(lOnOffRect, lAnimationClipGroup.isToogle ? "↑" : "↓", ref lAnimationClipGroup.isToogle);
             //*/
             
             //* Clip Group 삭제
@@ -204,7 +281,8 @@ public class UIAnimTimeLineWindow : DrawAnimTimeLine
             lClipRemoveAtRect.x += pLeftRect.width - pLeftRect.x;
             lClipRemoveAtRect.y = pLeftRect.y;
             
-            if (BasicDraw.DrawButton(lClipRemoveAtRect, "-", Texture2D.blackTexture))
+            lIsDraw = topY <= lClipRemoveAtRect.y + lClipRemoveAtRect.height;
+            if (lIsDraw && BasicDraw.DrawButton(lClipRemoveAtRect, "-", Texture2D.blackTexture))
             {
                 lAnimationClipGroup.IsObjNullCheck();
                 _UiAnimator.AnimationClipGroupsRemoveAt(pIndex);
@@ -222,7 +300,8 @@ public class UIAnimTimeLineWindow : DrawAnimTimeLine
                     lClipAddRect.x += pLeftRect.width;
                     lClipAddRect.y = pLeftRect.y;
                     
-                    if (BasicDraw.DrawButton(lClipAddRect, "+", Texture2D.blackTexture))
+                    lIsDraw = topY <= lClipAddRect.y + lClipAddRect.height;
+                    if (lIsDraw && BasicDraw.DrawButton(lClipAddRect, "+", Texture2D.blackTexture))
                     {
                         DrawAddClipGroup(lAnimationClipGroup);
                     }
@@ -235,8 +314,13 @@ public class UIAnimTimeLineWindow : DrawAnimTimeLine
                 //* GameObject 추가
                 Rect lGameObjectRect = pLeftRect;
                 
-                lAnimationClipGroup.obj = (GameObject)EditorGUI.ObjectField(lGameObjectRect, "GameObject",
-                    lAnimationClipGroup.obj, typeof(GameObject), true);
+                lIsDraw = topY <= lGameObjectRect.y + lGameObjectRect.height;
+                if (lIsDraw)
+                {
+                    lAnimationClipGroup.obj = (GameObject)EditorGUI.ObjectField(lGameObjectRect, "GameObject",
+                        lAnimationClipGroup.obj, typeof(GameObject), true);
+                }
+
                 pLeftRect.y += pLeftRect.height + 5;
                 //*/
 
@@ -247,7 +331,9 @@ public class UIAnimTimeLineWindow : DrawAnimTimeLine
                     Rect lClipDeleteRect = _buttonRect;
                     lClipDeleteRect.x = pLeftRect.x;
                     lClipDeleteRect.y = pLeftRect.y;
-                    if (BasicDraw.DrawButton(lClipDeleteRect, "-"))
+                    
+                    lIsDraw = topY <= lClipDeleteRect.y + lClipDeleteRect.height;
+                    if (lIsDraw && BasicDraw.DrawButton(lClipDeleteRect, "-"))
                     {
                         lAnimationClipGroup.clipGroups.Remove(clips);
                         break;
@@ -257,7 +343,10 @@ public class UIAnimTimeLineWindow : DrawAnimTimeLine
                     //* Clip 이름표시
                     Rect lClipNameRect = pLeftRect;
                     lClipNameRect.x += 20;
-                    BasicDraw.DrawText(lClipNameRect, clips.clipType.ToString(), TextAnchor.MiddleLeft);
+                    
+                    lIsDraw = topY <= lClipNameRect.y + lClipNameRect.height;
+                    if(lIsDraw)
+                        BasicDraw.DrawText(lClipNameRect, clips.clipType.ToString(), TextAnchor.MiddleLeft);
                     //*/
                     
                     //* Clip 표시
@@ -278,23 +367,32 @@ public class UIAnimTimeLineWindow : DrawAnimTimeLine
                             lClipRect.width -= timeLineRect.x - lClipRect.x;
                             lClipRect.x = timeLineRect.x;
                         }
-                        
-                        if(lSelectClip == clips.clipList[clipIndex])
-                            BasicDraw.DrawRect(lClipRect, Color.magenta);
-                        else
-                            BasicDraw.DrawRect(lClipRect, Color.cyan);
-                        
+
+                        lIsDraw = topY <= lClipRect.y  +lClipRect.height;
+                        if (lIsDraw)
+                        {
+                            if (lSelectClip == clips.clipList[clipIndex])
+                                BasicDraw.DrawRect(lClipRect, Color.magenta);
+                            else
+                                BasicDraw.DrawRect(lClipRect, Color.cyan);
+                            
                         lClipRectList.Add(lClipRect);
+                        }
+
                     }
                     //*/
                     
                     //* Clip TimeLine 추가 or 삭제
                     Rect lTimeLineClickRect = new Rect(timeLineRect.x, pLeftRect.y, timeLineRect.width, pLeftRect.height);
-                    
-                    if(lSelectClip is not null && lSelectClip.eClipType == clips.clipType)
-                        BasicDraw.DrawRect(lTimeLineClickRect, Color.black);
-                    else
-                        BasicDraw.DrawRect(lTimeLineClickRect);
+
+                    lIsDraw = topY <= lTimeLineClickRect.y + lTimeLineClickRect.height;
+                    if (lIsDraw)
+                    {
+                        if (lSelectClip is not null && lSelectClip.eClipType == clips.clipType)
+                            BasicDraw.DrawRect(lTimeLineClickRect, Color.black);
+                        else
+                            BasicDraw.DrawRect(lTimeLineClickRect);
+                    }
 
                     if (pMouseEvent.type == EventType.ContextClick &&
                         lTimeLineClickRect.Contains(pMouseEvent.mousePosition))

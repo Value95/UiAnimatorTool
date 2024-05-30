@@ -26,7 +26,8 @@ public class TestDataEditor : UnityEditor.Editor
     {
         if (_uiAnimTimeLineWindow != null)
         {
-            EditorPrefs.SetBool(WindowOpenKey, true);
+            _uiAnimTimeLineWindow.CloseWindow();
+            EditorPrefs.SetBool(WindowOpenKey, false);
         }
         else
         {
