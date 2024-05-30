@@ -336,7 +336,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &585478491
+--- !u!114 &180093644
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -351,16 +351,16 @@ MonoBehaviour:
   uiAnimator: {fileID: 2094415937}
   eClipType: 2
   clipName: ScaleClip
-  startTime: 1.5990373
-  endTime: 3.644528
+  startTime: 5.117028
+  endTime: 7.2021403
   animCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
       value: 0
-      inSlope: 0
-      outSlope: 0
+      inSlope: 2
+      outSlope: 2
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
@@ -377,8 +377,8 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  startScale: {x: 1, y: 1, z: 1}
-  endScale: {x: 1, y: 2, z: 1}
+  startScale: {x: 1, y: 2, z: 1}
+  endScale: {x: 2, y: 1, z: 1}
 --- !u!1 &616745232
 GameObject:
   m_ObjectHideFlags: 0
@@ -471,7 +471,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &797350376
+--- !u!114 &640012879
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -486,59 +486,34 @@ MonoBehaviour:
   uiAnimator: {fileID: 2094415937}
   eClipType: 2
   clipName: ScaleClip
-  startTime: 4.278469
-  endTime: 7.138156
+  startTime: 1.8501694
+  endTime: 4.0501046
   animCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
       value: 0
-      inSlope: 1
-      outSlope: 1
-      tangentMode: 34
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
       weightedMode: 0
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
       time: 1
       value: 1
-      inSlope: 1
-      outSlope: 1
-      tangentMode: 34
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
       weightedMode: 0
       inWeight: 0
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  startScale: {x: 1, y: 2, z: 1}
-  endScale: {x: 2, y: 1, z: 1}
---- !u!114 &909125750
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ae160d95ffe99a345993f45ec550207f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  uiAnimator: {fileID: 2094415937}
-  eClipType: 2
-  clipName: ScaleClip
-  startTime: 2.5301971
-  endTime: 2.5401971
-  animCurve:
-    serializedVersion: 2
-    m_Curve: []
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  startScale: {x: 0, y: 0, z: 0}
-  endScale: {x: 0, y: 0, z: 0}
+  startScale: {x: 1, y: 1, z: 1}
+  endScale: {x: 1, y: 2, z: 1}
 --- !u!1 &1733713972
 GameObject:
   m_ObjectHideFlags: 0
@@ -610,16 +585,16 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2094415932}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0.08715578, z: 0, w: 0.9961947}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1.0013727, z: 1}
+  m_LocalScale: {x: 1.999999, y: 1.000001, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 62005920}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 10, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 2444.4038, y: 605.55963}
+  m_AnchoredPosition: {x: 500.00037, y: 799.99994}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2094415935
@@ -676,7 +651,6 @@ MonoBehaviour:
   drawViewMax: 1.5
   animTime: 10
   autoPlay: 0
-  drawClip: {fileID: 0}
   _animationClipGroups:
   - index: 0
     isToogle: 1
@@ -687,9 +661,8 @@ MonoBehaviour:
       - {fileID: 13287231}
     - clipType: 2
       clipList:
-      - {fileID: 909125750}
-      - {fileID: 585478491}
-      - {fileID: 797350376}
+      - {fileID: 640012879}
+      - {fileID: 180093644}
     _groupName: group
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
