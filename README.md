@@ -7,3 +7,7 @@ UIAnimTimeLineWindow에서 선택한 클립 정보를 보여줍니다.
 
 ![image](https://github.com/Value95/UiAnimatorTool/assets/45136938/30b99f13-84a4-45d8-baf8-276cac9b80d0)
 애니메이션 클립을 생성하고 시간과 동작을 제어할수있습니다.
+
+
+https://github.com/Value95/UiAnimatorTool/assets/45136938/0277e921-7649-4833-9afd-0bd2ce76f59d
+
