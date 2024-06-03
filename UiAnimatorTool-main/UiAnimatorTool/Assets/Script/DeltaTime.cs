@@ -20,8 +20,6 @@ public class EditorDeltaTime
         float currentEditorTime = (float)EditorApplication.timeSinceStartup;
         _customDeltaTime = currentEditorTime - _lastEditorUpdateTime;
         _lastEditorUpdateTime = currentEditorTime;
-
-        Debug.Log("Editor Delta Time: " + _customDeltaTime);
     }
 
     public static float GetDeltaTime()

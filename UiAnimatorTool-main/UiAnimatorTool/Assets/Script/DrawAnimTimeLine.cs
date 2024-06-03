@@ -1,3 +1,4 @@
+using System;
 using UnityEditor;
 using UnityEngine;
 
@@ -39,18 +40,25 @@ public class DrawAnimTimeLine : EditorWindow
     private int _sell = 10; // 0~1 사이의 표시할 칸의 갯수
     
     void OnGUI()
-    {;
-        windowRect = position;
+    {
+        try
+        {
+            windowRect = position;
 
-        var cEvent = Event.current;
+            var cEvent = Event.current;
 
-        RectSetting();
+            RectSetting();
         
-        _DrawSlider();
-        _DrawTimeDot();
-        _DrawCurrentTime();
+            _DrawSlider();
+            _DrawTimeDot();
+            _DrawCurrentTime();
 
-        ContentsUpdate(contentsRect, cEvent);
+            ContentsUpdate(contentsRect, cEvent);
+        }
+        catch (ArgumentException e)
+        {
+            Debug.LogError("Caught an ArgumentException: " + e.Message);
+        }
     }
 
     protected void Init()

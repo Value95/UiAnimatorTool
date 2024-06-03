@@ -32,9 +32,9 @@ public static class BasicDraw
 
     public static void DrawRect(Rect pRect, Color pColor)
     {
-        GUI.backgroundColor = pColor;
+       // GUI.backgroundColor = pColor;
         DrawRect(pRect);
-        GUI.backgroundColor = Color.white;
+        //GUI.backgroundColor = Color.white;
     }
     
     public static void DrawRect(Rect pRect)

@@ -90,7 +90,7 @@ public class UiAnimator : MonoBehaviour
             {
                 int lClipListCount = clipGroup.clipList.Count;
                 for (int lClipListIndex = 0; lClipListIndex < lClipListCount; ++lClipListIndex)
-                {
+                {                                                                                                                                                                                                                                                                                                     
                     if (pPlayTime > clipGroup.clipList[lClipListIndex].startTime && pPlayTime < clipGroup.clipList[lClipListIndex].endTime)
                     {
                         clipGroup.clipList[lClipListIndex].Play(_animationClipGroups[lClipGroupIndex].obj, pPlayTime);
@@ -252,17 +252,10 @@ public class AnimationClipGroup
     {
         get
         {
-            try
-            {
-                if (obj == null)
-                    return _groupName;
-                else
-                    return obj.name;
-            }
-            catch (Exception e)
-            {
-                return "Error";
-            }
+            if (obj == null)
+                return _groupName;
+            else
+                return obj.name;
         }
     }
 
