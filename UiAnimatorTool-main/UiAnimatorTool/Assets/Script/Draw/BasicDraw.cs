@@ -32,15 +32,15 @@ public static class BasicDraw
 
     public static void DrawRect(Rect pRect, Color pColor)
     {
-        Color lPpreviousColor = GUI.color; // Save the previous GUI color
-        GUI.color = pColor; // Set the new color
+        Color lPpreviousColor = GUI.color; 
+        GUI.color = pColor; 
         DrawRect(pRect);
-        GUI.color = lPpreviousColor; // Restore the previous GUI color
+        GUI.color = lPpreviousColor;
     }
     
     public static void DrawRect(Rect pRect)
     {
-        GUI.DrawTexture(pRect, Texture2D.grayTexture); // Draw the rectangle using a white texture colored by the current GUI color
+        GUI.DrawTexture(pRect, Texture2D.grayTexture); 
     }
 
     public static void DrawLine(Vector3 pStart, Vector3 pEnd)
