@@ -38,27 +38,20 @@ public class DrawAnimTimeLine : EditorWindow
     
     [SerializeField]
     private int _sell = 10; // 0~1 사이의 표시할 칸의 갯수
-    
+
     void OnGUI()
     {
-        try
-        {
-            windowRect = position;
+        windowRect = position;
 
-            var cEvent = Event.current;
+        var cEvent = Event.current;
 
-            RectSetting();
-        
-            _DrawSlider();
-            _DrawTimeDot();
-            _DrawCurrentTime();
+        RectSetting();
 
-            ContentsUpdate(contentsRect, cEvent);
-        }
-        catch (ArgumentException e)
-        {
-            Debug.LogError("Caught an ArgumentException: " + e.Message);
-        }
+        _DrawSlider();
+        _DrawTimeDot();
+        _DrawCurrentTime();
+
+        ContentsUpdate(contentsRect, cEvent);
     }
 
     protected void Init()
