@@ -278,6 +278,10 @@ public class AnimationClipGroup
     public void AddClip(UiAnimator pUiAnimator, Clip.ClipType pClipType, float pStartTime, float pEndTime)
     {
         Clip lClip = CreateClip(pUiAnimator, pClipType, pStartTime, pEndTime);
+        
+        if(lClip == null)
+            return;
+        
         AddClipGroup(pClipType);
 
         foreach (var clipGroup in clipGroups)
