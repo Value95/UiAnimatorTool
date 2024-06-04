@@ -32,16 +32,15 @@ public static class BasicDraw
 
     public static void DrawRect(Rect pRect, Color pColor)
     {
-        GUI.backgroundColor = pColor;
+        Color lPpreviousColor = GUI.color; // Save the previous GUI color
+        GUI.color = pColor; // Set the new color
         DrawRect(pRect);
-        GUI.backgroundColor = Color.white;
+        GUI.color = lPpreviousColor; // Restore the previous GUI color
     }
     
     public static void DrawRect(Rect pRect)
     {
-        GUILayout.BeginArea(pRect); // pRect 영역 내부에 레이블을 그리기 위해 BeginArea 호출
-        GUILayout.Box("", GUILayout.Width(pRect.width), GUILayout.Height(pRect.height)); // 빈 상자를 그려서 Rect를 표현
-        GUILayout.EndArea(); // BeginArea와 짝을 이루는 EndArea 호출
+        GUI.DrawTexture(pRect, Texture2D.grayTexture); // Draw the rectangle using a white texture colored by the current GUI color
     }
 
     public static void DrawLine(Vector3 pStart, Vector3 pEnd)
@@ -51,15 +50,16 @@ public static class BasicDraw
 
     public static bool DrawButton(Rect pRect, string pText, Texture2D pTexture = null)
     {
-        GUILayout.BeginArea(pRect); // 버튼을 그릴 영역 설정
-        
-        GUIStyle buttonStyle = new GUIStyle(GUI.skin.button);
-        buttonStyle.normal.background = pTexture;
+        GUIStyle lButtonStyle = new GUIStyle(GUI.skin.button);
+        if (pTexture != null)
+        {
+            lButtonStyle.normal.background = pTexture;
+        }
 
-        bool lbool = GUILayout.Button(pText, buttonStyle);
-        
+        GUILayout.BeginArea(pRect);
+        bool lbool = GUI.Button(new Rect(0, 0, pRect.width, pRect.height), pText, lButtonStyle);
         GUILayout.EndArea();
-        
+
         return lbool;
     }
 
