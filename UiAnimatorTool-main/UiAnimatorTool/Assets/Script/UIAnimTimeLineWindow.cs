@@ -228,17 +228,17 @@ public class UIAnimTimeLineWindow : DrawAnimTimeLine
         {
             bool lIsDraw = false;
             
-            AnimationClipGroup lAnimationClipGroup = _UiAnimator.GetAnimationClipGroup(pIndex);
+            AnimatorClipGroup lAnimatorClipGroup = _UiAnimator.GetAnimationClipGroup(pIndex);
 
-            if (lAnimationClipGroup.clipGroups is null)
+            if (lAnimatorClipGroup.clipGroups is null)
                 return (false, 0);
             
-            int lClipGroupCount = lAnimationClipGroup.clipGroups.Count;
+            int lClipGroupCount = lAnimatorClipGroup.clipGroups.Count;
 
             //* Clip영역 Rect 
             Rect lBackGroundRect = pLeftRect;
 
-            if (lAnimationClipGroup.isToogle)
+            if (lAnimatorClipGroup.isToogle)
                 lBackGroundRect.height = (lBackGroundRect.height * (lClipGroupCount + 2)) + 10 + (lClipGroupCount * 5);
 
             lIsDraw = topY <= lBackGroundRect.y + lBackGroundRect.height;
@@ -262,7 +262,7 @@ public class UIAnimTimeLineWindow : DrawAnimTimeLine
             if (lIsDraw)
             {
                 BasicDraw.GuiStyleRefresh();
-                BasicDraw.DrawText(lGroupNameRect, lAnimationClipGroup.groupName, TextAnchor.MiddleLeft);
+                BasicDraw.DrawText(lGroupNameRect, lAnimatorClipGroup.groupName, TextAnchor.MiddleLeft);
             }
             //*/
 
@@ -273,28 +273,28 @@ public class UIAnimTimeLineWindow : DrawAnimTimeLine
 
             lIsDraw = topY <= lOnOffRect.y +lOnOffRect.height;
             if(lIsDraw)
-                DrawToggleLabel(lOnOffRect, lAnimationClipGroup.isToogle ? "↑" : "↓", ref lAnimationClipGroup.isToogle);
+                DrawToggleLabel(lOnOffRect, lAnimatorClipGroup.isToogle ? "↑" : "↓", ref lAnimatorClipGroup.isToogle);
             //*/
             
             //* Clip Group 삭제
             Rect lClipRemoveAtRect = _buttonRect;
-            lClipRemoveAtRect.x += pLeftRect.width - pLeftRect.x;
+            lClipRemoveAtRect.x += pLeftRect.width - pLeftRect.x + 10;
             lClipRemoveAtRect.y = pLeftRect.y;
             
             lIsDraw = topY <= lClipRemoveAtRect.y + lClipRemoveAtRect.height;
             if (lIsDraw && BasicDraw.DrawButton(lClipRemoveAtRect, "-", Texture2D.blackTexture))
             {
-                lAnimationClipGroup.IsObjNullCheck();
+                lAnimatorClipGroup.IsObjNullCheck();
                 _UiAnimator.AnimationClipGroupsRemoveAt(pIndex);
                 return (false, 0.0f);
             }
             //*/
             
             // Clip Contents
-            if (lAnimationClipGroup.isToogle)
+            if (lAnimatorClipGroup.isToogle)
             {
                 //+ Clip Group 기능추가
-                if (lAnimationClipGroup.obj is not null)
+                if (lAnimatorClipGroup.obj is not null)
                 {
                     Rect lClipAddRect = _buttonRect;
                     lClipAddRect.x += pLeftRect.width;
@@ -303,7 +303,7 @@ public class UIAnimTimeLineWindow : DrawAnimTimeLine
                     lIsDraw = topY <= lClipAddRect.y + lClipAddRect.height;
                     if (lIsDraw && BasicDraw.DrawButton(lClipAddRect, "+", Texture2D.blackTexture))
                     {
-                        DrawAddClipGroup(lAnimationClipGroup);
+                        DrawAddClipGroup(lAnimatorClipGroup);
                     }
                 }
                 pLeftRect.y += pLeftRect.height + 10;
@@ -317,15 +317,15 @@ public class UIAnimTimeLineWindow : DrawAnimTimeLine
                 lIsDraw = topY <= lGameObjectRect.y + lGameObjectRect.height;
                 if (lIsDraw)
                 {
-                    lAnimationClipGroup.obj = (GameObject)EditorGUI.ObjectField(lGameObjectRect, "GameObject",
-                        lAnimationClipGroup.obj, typeof(GameObject), true);
+                    lAnimatorClipGroup.obj = (GameObject)EditorGUI.ObjectField(lGameObjectRect, "GameObject",
+                        lAnimatorClipGroup.obj, typeof(GameObject), true);
                 }
 
                 pLeftRect.y += pLeftRect.height + 5;
                 //*/
 
                 //* Clip
-                foreach (var clips in lAnimationClipGroup.clipGroups)
+                foreach (var clips in lAnimatorClipGroup.clipGroups)
                 {
                     //* Clip 삭제 버튼
                     Rect lClipDeleteRect = _buttonRect;
@@ -335,7 +335,7 @@ public class UIAnimTimeLineWindow : DrawAnimTimeLine
                     lIsDraw = topY <= lClipDeleteRect.y + lClipDeleteRect.height;
                     if (lIsDraw && BasicDraw.DrawButton(lClipDeleteRect, "-"))
                     {
-                        lAnimationClipGroup.clipGroups.Remove(clips);
+                        lAnimatorClipGroup.clipGroups.Remove(clips);
                         break;
                     }
                     //*/
@@ -362,9 +362,13 @@ public class UIAnimTimeLineWindow : DrawAnimTimeLine
                         lClipRect.x = TimeLineValueToPosition((clips.clipList[clipIndex].startTime / drawTime) - lStartTime);
                         lClipRect.width = TimeLineValueToPosition((clips.clipList[clipIndex].endTime / drawTime) - lStartTime) - lClipRect.x;
 
+
+                        Debug.Log("x : " + lClipRect.x);
+                        Debug.Log("width : " + lClipRect.width);
+
                         if (lClipRect.x < timeLineRect.x)
                         {
-                            lClipRect.width -= timeLineRect.x - lClipRect.x;
+                            lClipRect.width = Mathf.Max(0, lClipRect.width - (timeLineRect.x - lClipRect.x));
                             lClipRect.x = timeLineRect.x;
                         }
 
@@ -431,7 +435,7 @@ public class UIAnimTimeLineWindow : DrawAnimTimeLine
                                     
                                     
                                     
-                                    lAnimationClipGroup.AddClip(_UiAnimator, clips.clipType, lStartTime, lEndTime);
+                                    lAnimatorClipGroup.AddClip(_UiAnimator, clips.clipType, lStartTime, lEndTime);
                                 });
                         }
 
@@ -479,18 +483,18 @@ public class UIAnimTimeLineWindow : DrawAnimTimeLine
         }
         
         // 클립의 기능추가
-        private void DrawAddClipGroup(AnimationClipGroup pAnimationClipGroup)
+        private void DrawAddClipGroup(AnimatorClipGroup pAnimatorClipGroup)
         {
             // 팝업 표시
             GenericMenu menu = new GenericMenu();
 
             foreach (Clip.ClipType clipTag in Enum.GetValues(typeof(Clip.ClipType)))
             {
-                if (!pAnimationClipGroup.ClipGroupContainsKey(clipTag))
+                if (!pAnimatorClipGroup.ClipGroupContainsKey(clipTag))
                 {
                     menu.AddItem(new GUIContent(clipTag.ToString()), false, () =>
                     {
-                        pAnimationClipGroup.AddClipGroup(clipTag);
+                        pAnimatorClipGroup.AddClipGroup(clipTag);
                     });
                 }
             }

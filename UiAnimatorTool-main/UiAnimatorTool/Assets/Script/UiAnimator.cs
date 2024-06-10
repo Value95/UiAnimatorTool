@@ -27,7 +27,7 @@ public class UiAnimator : MonoBehaviour
     public UIAnimTimeLineWindow.AnimState animState { get; private set; } = UIAnimTimeLineWindow.AnimState.None;
     
     [SerializeField] [HideInInspector]
-    private List<AnimationClipGroup> _animationClipGroups;
+    private List<AnimatorClipGroup> _animationClipGroups;
     
     private Action stateFunc;
 
@@ -137,9 +137,9 @@ public class UiAnimator : MonoBehaviour
     public void AddAnimClipGroup()
     {
         if (_animationClipGroups == null)
-            _animationClipGroups = new List<AnimationClipGroup>();
+            _animationClipGroups = new List<AnimatorClipGroup>();
                      
-        var lAnimationClipGroup = new AnimationClipGroup(_animationClipGroups.Count);
+        var lAnimationClipGroup = new AnimatorClipGroup(_animationClipGroups.Count);
         
         _animationClipGroups.Add(lAnimationClipGroup);
     }
@@ -153,10 +153,10 @@ public class UiAnimator : MonoBehaviour
         }
     }
     
-    public AnimationClipGroup GetAnimationClipGroup(int pIndex)
+    public AnimatorClipGroup GetAnimationClipGroup(int pIndex)
     {
         if (_animationClipGroups == null)
-            return new AnimationClipGroup();
+            return new AnimatorClipGroup();
         
         return _animationClipGroups[pIndex];
     }
@@ -203,12 +203,13 @@ public class ClipGroup
 
     public Clip.ClipType clipType;
     
+
     [SerializeField]
     public List<Clip> clipList;
 }
 
 [System.Serializable]
-public class AnimationClipGroup
+public class AnimatorClipGroup
 {
     [SerializeField]
     public int index;
@@ -225,9 +226,9 @@ public class AnimationClipGroup
     [SerializeField]
     private string _groupName;
 
-    public AnimationClipGroup() { }
+    public AnimatorClipGroup() { }
 
-    public AnimationClipGroup(int pIndex)
+    public AnimatorClipGroup(int pIndex)
     {
         index = pIndex;
         isToogle = true;
