@@ -362,10 +362,6 @@ public class UIAnimTimeLineWindow : DrawAnimTimeLine
                         lClipRect.x = TimeLineValueToPosition((clips.clipList[clipIndex].startTime / drawTime) - lStartTime);
                         lClipRect.width = TimeLineValueToPosition((clips.clipList[clipIndex].endTime / drawTime) - lStartTime) - lClipRect.x;
 
-
-                        Debug.Log("x : " + lClipRect.x);
-                        Debug.Log("width : " + lClipRect.width);
-
                         if (lClipRect.x < timeLineRect.x)
                         {
                             lClipRect.width = Mathf.Max(0, lClipRect.width - (timeLineRect.x - lClipRect.x));
