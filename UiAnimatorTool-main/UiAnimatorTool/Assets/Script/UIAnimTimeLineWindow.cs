@@ -96,8 +96,7 @@ public class UIAnimTimeLineWindow : DrawAnimTimeLine
             // Game Scene Update
             if (!Application.isPlaying)
                 _GameSceneUpdate();
-
-
+            
             _UiAnimator.StateUpdate();
             _PlayingTime();
         }

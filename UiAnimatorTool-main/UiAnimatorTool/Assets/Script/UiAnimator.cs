@@ -22,7 +22,8 @@ public class UiAnimator : MonoBehaviour
 
     public float curTime { get; private set; }
 
-    [SerializeField] [HideInInspector] public Clip drawClip { get; private set; } // 현재 보여주고 있는 클립
+    [SerializeField] [HideInInspector] 
+    public Clip drawClip { get; private set; } // 현재 보여주고 있는 클립
 
     public UIAnimTimeLineWindow.AnimState animState { get; private set; } = UIAnimTimeLineWindow.AnimState.None;
     
@@ -225,7 +226,7 @@ public class AnimatorClipGroup
     
     [SerializeField]
     private string _groupName;
-
+Dictionary<>
     public AnimatorClipGroup() { }
 
     public AnimatorClipGroup(int pIndex)

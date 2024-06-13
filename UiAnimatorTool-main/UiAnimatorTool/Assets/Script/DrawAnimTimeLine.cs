@@ -45,11 +45,11 @@ public class DrawAnimTimeLine : EditorWindow
 
         var cEvent = Event.current;
 
-        RectSetting();
+        RectSetting(); // TimeLine Rect, ConetenRect의 범위를 설정
 
         _DrawSlider();
         _DrawTimeDot();
-        _DrawCurrentTime();
+        _DrawCurrentTime(); // 현재 클릭한 TimeLine의 시간을 표시
 
         ContentsUpdate(contentsRect, cEvent);
     }
@@ -125,8 +125,8 @@ public class DrawAnimTimeLine : EditorWindow
                     BasicDraw.labelStyle.fontSize = 10;
                 }
 
-                float s = (int)((lLoopCount * 10) / 20);
-                if(s == 0 || lDrawTime == 0 || 0 == lDrawCount % s)
+                float lDrawNumber = (int)((lLoopCount * 10) / 20);
+                if(lDrawNumber == 0 || lDrawTime == 0 || 0 == lDrawCount % lDrawNumber)
                     BasicDraw.DrawText(new Rect(lStartVector.x - 10, lStartVector.y - 20, 30, 20), lDrawTime, "0.00");   
                 
             }
