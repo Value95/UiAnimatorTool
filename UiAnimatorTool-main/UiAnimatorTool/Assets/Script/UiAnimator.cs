@@ -226,7 +226,7 @@ public class AnimatorClipGroup
     
     [SerializeField]
     private string _groupName;
-Dictionary<>
+    
     public AnimatorClipGroup() { }
 
     public AnimatorClipGroup(int pIndex)
