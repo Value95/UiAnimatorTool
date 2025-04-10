@@ -1,0 +1,53 @@
+# ========== Unity 기본 무시 목록 ==========
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+
+# Crash reports
+sysinfo.txt
+
+# 자동 생성된 VS/JetBrains 관련 파일
+.vscode/
+*.csproj
+*.unityproj
+*.sln
+*.suo
+*.tmp
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.mdb
+
+# Unity-generated files
+*.apk
+*.aab
+*.keystore
+
+# 플랫폼별
+.DS_Store
+*.swp
+*.lock
+*.psd
+*.zip
+*.rar
+
+# 의도적 제외 (필요 시 주석 해제)
+#Assets/Plugins/
+#Assets/StreamingAssets/
+
+# 유니티 Collaborate
+.collabignore
+.collab/
+
+# Rider 관련
+.idea/
+*.iml
+
+# git-lfs 관련
+*.unitypackage
