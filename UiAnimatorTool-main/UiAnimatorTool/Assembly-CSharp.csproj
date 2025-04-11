@@ -45,6 +45,7 @@
     <Analyzer Include="C:\Program Files\Unity\Hub\Editor\2022.3.24f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.Properties.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Script\UI\Window\TestWindow\TestWindow.cs" />
     <Compile Include="Assets\Script\UIAnimTool\Draw\BasicDraw.cs" />
     <Compile Include="Assets\Script\UIAnimTool\Clip\ScaleClip.cs" />
     <Compile Include="Assets\Script\UIAnimTool\Clip\RotationClip.cs" />
@@ -60,6 +61,8 @@
     <Compile Include="Assets\Script\UIAnimTool\Clip\Clip.cs" />
     <Compile Include="Assets\Script\Util\DefineUtil.cs" />
     <Compile Include="Assets\Script\UIAnimTool\Clip\ActiveClip.cs" />
+    <Compile Include="Assets\Script\Manager\NoMono\TableManager.cs" />
+    <Compile Include="Assets\Script\Manager\Mono\ManagerGroup.cs" />
     <Compile Include="Assets\Script\UIAnimTool\Clip\PositionClip.cs" />
     <Compile Include="Assets\Script\UIAnimTool\DrawAnimTimeLine.cs" />
     <Compile Include="Assets\Script\UI\Popup\BasePopup.cs" />

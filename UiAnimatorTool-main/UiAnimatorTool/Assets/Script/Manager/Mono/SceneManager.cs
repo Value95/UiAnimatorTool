@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Diagnostics;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using Utils;
 
 public class SceneManager : BaseManager
 {
@@ -39,6 +41,7 @@ public class SceneManager : BaseManager
 
     public override void Run()
     {
+        StartCoroutine(LoadSceneAsync(DefineUtil.TOWN_SCEENAME, (isBool) => { }));
     }
 
     public static IEnumerator LoadSceneAsync(string eSceneName, Action<bool> callBack)

@@ -43,20 +43,21 @@ public class UIManager : BaseManager
     
     public override void Prepare()
     {
-        throw new System.NotImplementedException();
     }
-
+    
     public override void Run()
     {
-        throw new System.NotImplementedException();
+        windowHistory = new Queue<BaseWindow>();
+        popupHistory = new Queue<BasePopup>();
     }
+    
 
-    public BaseWindow ShowWindow<T>(object[] param) where T : BaseWindow, new()
+
+    public BaseWindow ShowWindow<T>(object[] param = null) where T : BaseWindow, new()
     {
         T window = new T();
         GameObject windowPrefab = Resources.Load<GameObject>(window.Path());
-
-        windowPrefab.transform.parent = windowParent.transform;
+        GameObject.Instantiate(windowPrefab, windowParent.transform);
         
         if (windowPrefab == null)
         {
